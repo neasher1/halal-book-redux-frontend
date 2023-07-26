@@ -25,10 +25,10 @@ export default function Navbar() {
   const { user } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const { register, handleSubmit } = useForm();
+  const { register, watch } = useForm();
   const [searchResults, setSearchResults] = useState<IProduct[]>([]);
   const { data: products } = useGetProductsQuery(undefined);
-
+  const searchTerm = watch('search', '');
   console.log(products?.data);
 
   const handleLogOut = () => {
@@ -41,16 +41,16 @@ export default function Navbar() {
     setIsSearchOpen((prevState) => !prevState);
   };
 
-  const handleChange = (data: { search: string }) => {
-    const searchTerm = data?.search?.toLowerCase();
+  const handleChange = () => {
+    const searchTermLowerCase = searchTerm.toLowerCase();
     const filteredBooks = products?.data?.filter((book: IProduct) => {
       const title = book.title.toLowerCase();
       const author = book.author.toLowerCase();
       const genre = book.genre.toLowerCase();
       return (
-        title.includes(searchTerm) ||
-        author.includes(searchTerm) ||
-        genre.includes(searchTerm)
+        title.includes(searchTermLowerCase) ||
+        author.includes(searchTermLowerCase) ||
+        genre.includes(searchTermLowerCase)
       );
     });
     setSearchResults(filteredBooks || []);
@@ -105,7 +105,7 @@ export default function Navbar() {
                       placeholder="Search by title, author, or genre..."
                       className="border border-gray-300 rounded py-1 px-2 w-64"
                       {...register('search')}
-                      onChange={handleSubmit(handleChange)}
+                      onChange={handleChange}
                     />
                   </form>
                 </li>

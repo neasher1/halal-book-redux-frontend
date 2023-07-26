@@ -1,18 +1,15 @@
 import ProductCard from '@/components/ProductCard';
 import { Slider } from '@/components/ui/slider';
-import { useToast } from '@/components/ui/use-toast';
+// import { useToast } from '@/components/ui/use-toast';
 import { useGetProductsQuery } from '@/redux/feature/product/productApi';
-import {
-  setPriceRange,
-  toggleState,
-} from '@/redux/feature/product/productSlice';
+import { setPriceRange } from '@/redux/feature/product/productSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hook';
 import { IProduct } from '@/types/globalTypes';
 
 export default function Products() {
   const { data, isLoading, error } = useGetProductsQuery(undefined);
-  console.log(data?.data);
-  const { toast } = useToast();
+  console.log(data?.data, error);
+  // const { toast } = useToast();
 
   if (isLoading) {
     <h2>spinner</h2>;

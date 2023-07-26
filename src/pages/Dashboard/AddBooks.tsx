@@ -17,13 +17,9 @@ const AddBooks = () => {
   const { user } = useAppSelector((state) => state.user);
   const [postBook, { isLoading }] = usePostBookMutation();
 
-  const navigate = useNavigate();
+  console.log(isLoading);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit } = useForm<IProduct>();
 
   const handleAddBook = (data: IProduct) => {
     const priceAsNumber = Number(data.price);
@@ -42,8 +38,11 @@ const AddBooks = () => {
     postBook(addBook)
       .unwrap()
       .then((response) => {
+        toast({
+          description: 'Book details updated successfully!',
+        });
         console.log('Book added successfully:', response.data);
-        navigate('/products');
+        navigation('/products');
       })
       .catch((error) => {
         console.error('Error adding book:', error);
@@ -66,7 +65,7 @@ const AddBooks = () => {
                 <Input
                   id="title"
                   type="email"
-                  placeholder={user?.email}
+                  placeholder={user?.email ? user.email : ''}
                   readOnly
                 />
 

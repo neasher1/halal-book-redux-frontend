@@ -16,15 +16,13 @@ const EditBook = () => {
 
   const navigate = useNavigate();
   const { data: product, isLoading, error } = useSingleProductQuery(id);
-  const [editBook, { isLoading: isEditLoading }] = useEditBookMutation();
+  const [editBook] = useEditBookMutation();
+
+  console.log(isLoading, error);
 
   const { user } = useAppSelector((state) => state.user);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit } = useForm<IProduct>();
 
   console.log(product);
 
@@ -72,7 +70,7 @@ const EditBook = () => {
                 <Input
                   id="title"
                   type="email"
-                  placeholder={user?.email}
+                  placeholder={user?.email ? user.email : ''}
                   readOnly
                 />
                 <Input
